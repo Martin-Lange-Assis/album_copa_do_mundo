@@ -1,13 +1,10 @@
-// O SEGREDO ESTÁ AQUI: Sempre que você mudar algo no HTML, JS ou CSS, 
-// mude esse número (ex: v2 para v3, v4...). 
-// Isso avisa o celular que tem atualização!
 const CACHE_NAME = 'album-copa-2026-v3';
 
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
     './script.js',
-    './selecoes.js', /* <- MEGA IMPORTANTE: O arquivo novo precisa estar aqui */
+    './selecoes.js',
     './manifest.json',
     './icon-192.png',
     './icon-512.png',

@@ -12,7 +12,6 @@ const ASSETS_TO_CACHE = [
     './icon-192.png',
     './icon-512.png',
     './bandeiras/',
-    // Não esqueça de colocar os caminhos das suas bandeiras SVG aqui depois:
     './bandeiras/FWC.svg',
     './bandeiras/COK.svg',
     './bandeiras/MEX.svg',

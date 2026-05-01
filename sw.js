@@ -89,12 +89,33 @@ self.addEventListener('activate', (event) => {
     self.clients.claim(); // Atualiza todas as telas abertas instantaneamente
 });
 
-// Interceptador: Estratégia "Stale-While-Revalidate" modificada para Cache-First offline
+// Interceptador: Estratégia "Stale-While-Revalidate"
 self.addEventListener('fetch', (event) => {
+    // Evita interceptar requisições que não sejam GET (como POSTs) e requisições de extensões do Chrome
+    if (event.request.method !== 'GET' || !event.request.url.startsWith('http')) {
+        return;
+    }
+
     event.respondWith(
-        caches.match(event.request).then((response) => {
-            // Se achou no cache, devolve. Se não, busca na rede.
-            return response || fetch(event.request);
+        caches.match(event.request).then((cachedResponse) => {
+            // Cria uma requisição para a rede
+            const fetchPromise = fetch(event.request).then((networkResponse) => {
+                // Se a requisição deu certo, atualiza o cache com a nova versão
+                if (networkResponse && networkResponse.status === 200) {
+                    caches.open(CACHE_NAME).then((cache) => {
+                        cache.put(event.request, networkResponse.clone());
+                    });
+                }
+                return networkResponse;
+            }).catch(() => {
+                // Opcional: Aqui você pode retornar uma página offline genérica se a rede falhar
+                console.log('PWA: Usuário offline e recurso não cacheado.');
+            });
+
+            // Retorna o cache imediatamente (se existir). 
+            // Paralelamente, o fetchPromise vai atualizar o cache no background.
+            // Se NÃO existir no cache, ele espera a resposta da rede.
+            return cachedResponse || fetchPromise;
         })
     );
 });

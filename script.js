@@ -161,7 +161,6 @@ function inicializarDropdown() {
 // --- INICIALIZAÇÃO GERAL DO APP ---
 inicializarDropdown();
 
-// Inicia com o Brasil (Que é o índice 1 na sua lista, logo após a Argentina)
 const selecaoInicial = LISTA_SELECOES.find(s => s.sigla === 'BRA') || LISTA_SELECOES[0];
 renderizarSelecao(selecaoInicial.sigla, selecaoInicial.total);
 
